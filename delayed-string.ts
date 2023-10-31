@@ -1,10 +1,14 @@
+type KeyOfType<TOwner, TMember> = keyof {
+  [K in keyof TOwner as TOwner[K] extends TMember ? K : never]: any;
+};
+
 export class DelayedStringFactory {
   public stringPromise1: Promise<string> | undefined;
   public stringPromise2: Promise<string> | undefined;
   public numberPromise: Promise<number> | undefined;
 
   private getOrCreateStringPromise(
-    backingField: keyof DelayedStringFactory,
+    backingField: KeyOfType<DelayedStringFactory, Promise<string> | undefined>,
     delay: number,
     value: string
   ): Promise<string> {
